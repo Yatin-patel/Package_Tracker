@@ -1,0 +1,61 @@
+﻿@model PackageComponents.Models.DeliverDTO
+
+@{
+    ViewBag.Title = "Deliver Shipment";
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+@using (Html.BeginForm("Deliver", "Package", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.Package_ID)
+<div class="row top-buffer">
+    <div class="col-md-2 text-right">
+        <label>Karyakar: </label>
+    </div>
+    <div class="col-md-4">
+        @Html.DropDownListFor(model => model.Karyakar_ID, (SelectList)ViewBag.Karyakars, "Please Select", new { @class = "form-control" })
+    </div>
+    <div class="col-md-2 text-right">
+        <label>Date: </label>
+    </div>
+    <div class="col-md-4">
+        @Html.TextBox("Delivery_Date", null, new { @class = "form-control" })
+    </div>
+</div>
+<div class="row top-buffer">
+    <div class="col-md-2 text-right">
+        <label>Comments: </label>
+    </div>
+    <div class="col-md-10">
+        @Html.TextArea("Comments", Model.Comments, new { style = "width:800px", @class = "form-control" })
+    </div>
+</div>
+<div class="row top-buffer">
+    <div class="col-md-2 text-right">
+        <label>Signature: </label>
+    </div>
+    <div class="col-md-10">
+        @Html.TextBox("Karyakar_Signature", Model.Karyakar_Signature, new { @class = "form-control" })
+    </div>
+</div>
+<div class="row top-buffer">
+    <div class="col-md-12 text-right">
+        <input type="submit" class="btn-danger" value=" Save " />
+    </div>
+</div>
+}
+
+@section scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Delivery_Date').val('');
+        });
+
+        $(function () {
+            $('#Delivery_Date').datepicker();
+        });
+    </script>
+}
+
+
+
