@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PackageComponents.Models.PackageListDTO>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Package List";
+}
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(m => m.BarCode).Titled("BarCode").Filterable(true).Sanitized(false).Encoded(false).RenderValueAs(m => Html.ActionLink(m.BarCode,
+     "Receive", "Package", new { BarCode = m.BarCode }, null).ToHtmlString());
+    //columns.Add(m => m.BarCode).Titled("Barcode").SetWidth(80).Sortable(true);
+    columns.Add(m => m.Shipper.Shipper_Name).Titled("Shipper").SetWidth(150).Sortable(true);
+    columns.Add(m => m.Courier.Courier_Name).Titled("Courier").Sortable(true);
+    columns.Add(m => m.Department_Karyakar.Karyakar_Name).Titled("Department").Sortable(true);
+    columns.Add(m => m.Create_Date).Titled("Received").Sortable(true);
+    columns.Add(m => m.BarCode, "Bar Code").Titled("Deliver").Filterable(true).Sanitized(false).Encoded(false).RenderValueAs(m => Html.ActionLink("Deliver",
+     "Deliver", "Package", new { BarCode = m.BarCode }, null).ToHtmlString());
+}).WithPaging(20)
+
+<script src="@Url.Content("~/Scripts/jquery.min.js")" type="text/javascript"> </script>
+<link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/gridmvc.min.js")" type="text/javascript"> </script>

@@ -1,0 +1,177 @@
+﻿@model PackageComponents.Models.PackageDTO
+
+@{
+    ViewBag.Title = "Receive Package";
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+@using (Html.BeginForm("Receive", "Package", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Scan Barcode: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.TextBox("BarCode", Model.BarCode, new { @class = "form-control" })
+            @Html.ValidationMessage("BarCode")
+        </div>
+        <div class="col-md-2 text-right">
+            <label>Date Received: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.TextBox("Date_Received", null, new { @class = "form-control" })
+            @Html.ValidationMessage("Date_Received")
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Courier: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownListFor(model => model.Courier_ID, (SelectList)ViewBag.Couriers, "Please Select", new { @class = "form-control" })
+            @Html.ValidationMessage("Courier_ID")
+        </div>
+        <div class="col-md-2 text-right">
+            <label>Order By: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownListFor(model => model.Department_Karyakar_ID, (SelectList)ViewBag.Department_Karyakar_ID, "Please Select", new { @class = "form-control" })
+            @Html.ValidationMessage("Department_Karyakar_ID")
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Shipper: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.TextBox("Shipper_Name", Model.Shipper_Name, new { @class = "form-control" })
+            @Html.ValidationMessage("Shipper_Name")
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Shipper Address Line 1: </label>
+        </div>
+        <div class="col-md-10">
+            @Html.TextBox("Address_Line1", Model.Address_Line1, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Line 2: </label>
+        </div>
+        <div class="col-md-10">
+            @Html.TextBox("Address_Line2", Model.Address_Line2, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Line 3: </label>
+        </div>
+        <div class="col-md-10">
+            @Html.TextBox("Address_Line3", Model.Address_Line3, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>City: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.TextBox("City", Model.City, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2 text-right">
+            <label>State: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownListFor(model => model.State_ID, (SelectList)ViewBag.StateCodes, "Please Select", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Zip Code: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.TextBox("Zip_Code", Model.Zip_Code, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2 text-right">
+            <label>Country: </label>
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownListFor(model => model.Country_ID, (SelectList)ViewBag.Countries, "Please Select", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+        </div>
+        <div class="col-md-10">
+        </div>
+    </div>
+    <div class="row top-buffer">
+        <div class="col-md-2 text-right">
+            <label>Comments: </label>
+        </div>
+        <div class="col-md-10">
+            @Html.TextArea("Comments", Model.Comments, new { style = " width: 90% ", @class = "form-control" })
+        </div>
+    </div>
+    if (@ViewBag.HasImage)
+    {
+        var base64 = Convert.ToBase64String(Model.Package_Image);
+        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+        <div class="row top-buffer">
+            <div class="col-md-2 text-right">
+                @Html.Label("Package Image: ", new { @style = "vertical-align: middle" })
+            </div>
+            <div class="col-md-10">
+                <img id="imgPackage" src="@imgSrc" height="200px" width="200px" />
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row top-buffer">
+            <div class="col-md-2 text-right">
+                @Html.Label("Package Image: ", new { @style = "vertical-align: middle" })
+            </div>
+            <div class="col-md-10">
+                <input type="file" id="packageImage" name="upload" placeholder="Please upload image" />
+                @*@Html.TextBox("selectImage", null, new { placeholder = "Please upload image" })*@
+            </div>
+        </div>
+    }
+    <div class="row top-buffer">
+        <div class="col-md-12 text-right">
+            @if (string.IsNullOrEmpty(ViewBag.BarCode))
+            {
+                <input type="submit" id="submit" class="btn-danger" value=" Save " />
+            }
+            else
+            {
+                <input type="button" value=" Back " class="btn-danger" onclick="location.href='@Url.Action("PackageList","Package")'" />
+            }
+
+        </div>
+    </div>
+}
+@section scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#Date_Received').datepicker();
+        });
+
+        $('form').submit(function (e)
+        {
+            e.preventDefault();
+            if ($('#packageImage').val().trim() == '') {
+                alert('Please attach the image of the package received.');
+                return false; }
+            else {
+                $('form').unbind('submit').submit();
+            }
+        });
+    </script>
+}
